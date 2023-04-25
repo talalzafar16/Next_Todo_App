@@ -1,91 +1,60 @@
+"use client"
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from './page.module.css'
+import React, { useState } from "react"
+
 
 const inter = Inter({ subsets: ['latin'] })
 
+type comingData={
+  Todo:string;
+}
+
 export default function Home() {
+  let [Data,setData] = useState([{Todo:"This is Sample Todo"}])
+  const [text,setText] =useState("")
+    function Add(){
+        Data.push({Todo:text})
+        setData([...Data])
+    }   
+    function Delete(ind:number){
+      console.log(typeof(ind))
+        Data.splice(ind,1)
+        setData([...Data])
+    }   
+    function Edit(ind:number){
+      let a:string;
+      a=String(prompt("Enter New Todo"))
+      Data[ind].Todo=a
+      setData([...Data])
+    }
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className='flex h-screen bg-gradient-to-r from-cyan-200 via-blue-300 to-cyan-400 flex-col items-center'>
+    <h1 className='font-bold text-rose-400 text-5xl m-6'>Todo App</h1>
+        <div className='flex flex-col gap-4'>
+            <input type="text" className='w-64 h-10 rounded-2xl p-4 ' placeholder="Enter Todo here.." onChange={(e)=>{setText(e.target.value);}}/>
+            <button className='self-center w-36 bg-gradient-to-r to-rose-300 from-cyan-300 rounded-xl border-2 border-white h-9' onClick={()=>Add()}>Add</button>
+            </div>
+    <div className="w-auto bg-gradient-to-r from-rose-100 to-rose-300 rounded-2xl mt-8 p-5">
+            <ol className="list-decimal list-inside flex flex-col gap-3">
+                {Data.length>0&&Data.map((e:comingData,i)=>{
+                    return(
+                        <div className="flex">
+                        <li className="w-72">{e.Todo}</li>
+                        <div className="w-44 flex justify-between">
+                            <div>
+                            <button onClick={()=>Edit(i)} className="text-white bg-gradient-to-r from-cyan-200 via w-20 rounded-lg border-2 border-white">Edit</button>
+                            </div>
+                            <div>
+                          <button onClick={()=>Delete(i)} className="text-white bg-gradient-to-r from-cyan-200 via w-20 rounded-lg border-2 border-white">Delete</button>
+                            </div>
+                        </div>
+                        </div>
+                        )
+                })}
+            </ol>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-        <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
-        </div>
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   )
 }
