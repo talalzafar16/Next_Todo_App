@@ -40,7 +40,7 @@ export default function Home() {
             <ol className="list-decimal list-inside flex flex-col gap-3">
                 {Data.length>0&&Data.map((e:comingData,i)=>{
                     return(
-                        <div className="flex">
+                        <div key={i} className="flex">
                         <li className="w-72">{e.Todo}</li>
                         <div className="w-44 flex justify-between">
                             <div>
